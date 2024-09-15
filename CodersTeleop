@@ -1,0 +1,74 @@
+package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+
+@TeleOp
+
+public class CodersTeleop extends LinearOpMode {
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
+   
+public void runOpMode() {
+    backLeft = hardwareMap.get (DcMotor.class,"bl");
+    backRight = hardwareMap.get (DcMotor.class,"br");
+    frontLeft= hardwareMap.get (DcMotor.class,"fl");
+    frontRight= hardwareMap.get (DcMotor.class,"fr");
+    
+   backLeft.setDirection (DcMotor.Direction.REVERSE);
+    frontLeft.setDirection(DcMotor.Direction.REVERSE);
+    waitForStart();
+
+    while (opModeIsActive()) {
+        
+       
+       float fwdBackPower = -gamepad1.right_stick_y;
+       float strafePower= gamepad1.right_stick_x;
+       float turnPower = gamepad1.left_stick_x;
+       
+       
+       float leftFrontPower = fwdBackPower + turnPower + strafePower;
+       float rightFrontPower = fwdBackPower - turnPower - strafePower;
+       float leftBackPower = fwdBackPower + turnPower - strafePower;
+       float rightBackPower = fwdBackPower - turnPower + strafePower;
+       
+       /*
+float maxPower= Math.abs(leftFrontPower);
+
+if(Math.abs(rightFrontPower) > maxPower) {
+    maxPower =Math.abs(rightFrontPower);
+} 
+if(Math.abs(leftBackPower) > maxPower) {
+    maxPower = Math.abs(leftBackPower);
+}
+if(Math.abs(rightBackPower) > maxPower) {
+    maxPower = Math.abs(rightBackPower);
+}
+
+   //// if(maxPower > 1.0){
+        leftFrontPower = leftFrontPower/maxPower;
+        rightFrontPower = rightFrontPower/maxPower;
+        leftBackPower = leftBackPower/maxPower;
+        rightBackPower = rightBackPower/maxPower;
+   // }
+*/   
+   
+    backLeft.setPower(leftBackPower);
+    backRight.setPower(rightBackPower);
+    frontLeft.setPower(leftFrontPower);
+    frontRight.setPower(rightFrontPower);
+   
+
+    telemetry.addData("data" ,  leftFrontPower + 
+    " " + rightFrontPower +
+    " " + leftBackPower +
+    " " + rightBackPower);
+
+telemetry.update();
+}
+    }
+  }

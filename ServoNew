@@ -1,0 +1,120 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+
+@TeleOp
+public class HaniyaArif extends LinearOpMode {
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
+    Servo armServo = null;
+  Servo intake;
+  Servo rightHanger;
+  Servo rightHook;
+public void runOpMode() {
+    backLeft = hardwareMap.get (DcMotor.class,"backleft");
+    backRight = hardwareMap.get (DcMotor.class,"backright");
+    frontLeft= hardwareMap.get (DcMotor.class,"frontleft");
+    frontRight= hardwareMap.get (DcMotor.class,"frontright");
+    armServo = hardwareMap.get(Servo.class,"leftHangerServo");
+    intake = hardwareMap.get(Servo.class, "intake");
+   rightHanger = hardwareMap.get(Servo.class, "arm");
+   rightHook = hardwareMap.get(Servo.class, "rightHook");
+    
+    backLeft.setDirection (DcMotor.Direction.REVERSE);
+    frontLeft.setDirection(DcMotor.Direction.REVERSE);
+    frontRight.setDirection(DcMotor.Direction.REVERSE);
+    
+    waitForStart();
+
+    while (opModeIsActive()) {
+        
+       
+       float fwdBackPower = -gamepad1.right_stick_y;
+       float strafePower= gamepad1.right_stick_x;
+       float turnPower = gamepad1.left_stick_x;
+       
+       
+       float leftFrontPower = fwdBackPower + turnPower + strafePower;
+       float rightFrontPower = fwdBackPower - turnPower - strafePower;
+       float leftBackPower = fwdBackPower + turnPower - strafePower;
+       float rightBackPower = fwdBackPower - turnPower + strafePower;
+       
+       /*
+float maxPower= Math.abs(leftFrontPower);
+
+if(Math.abs(rightFrontPower) > maxPower) {
+    maxPower =Math.abs(rightFrontPower);
+} 
+if(Math.abs(leftBackPower) > maxPower) {
+    maxPower = Math.abs(leftBackPower);
+}
+if(Math.abs(rightBackPower) > maxPower) {
+    maxPower = Math.abs(rightBackPower);
+}
+
+   //// if(maxPower > 1.0){
+        leftFrontPower = leftFrontPower/maxPower;
+        rightFrontPower = rightFrontPower/maxPower;
+        leftBackPower = leftBackPower/maxPower;
+        rightBackPower = rightBackPower/maxPower;
+   // }
+*/   
+   
+    backLeft.setPower(leftBackPower);
+    backRight.setPower(rightBackPower);
+    frontLeft.setPower(leftFrontPower);
+    frontRight.setPower(rightFrontPower);
+   
+   if(gamepad1.a){
+       armServo.setPosition(1);
+       rightHook.setPosition(0);
+    }
+    else if (gamepad1.b){
+        armServo.setPosition(0);
+        rightHook.setPosition(1);
+    }
+    else if (gamepad1.y){
+        intake.setPosition(1);
+    }
+    else if(gamepad1.x){
+        intake.setPosition(0);
+    }
+    else{
+        
+    }
+    
+    
+    if(gamepad1.dpad_up){
+        rightHanger.setPosition(1);
+    }
+    else if (gamepad1.dpad_down){
+        rightHanger.setPosition(0);
+    }
+    else if(gamepad1.dpad_right){
+       rightHook.setPosition(1);
+    }
+    else if (gamepad1.dpad_left){
+        rightHook.setPosition(0);
+    }
+    else{
+        
+    }
+    telemetry.addData("data" ,  leftFrontPower + 
+    " " + rightFrontPower +
+    " " + leftBackPower +
+    " " + rightBackPower);
+
+telemetry.update();
+}
+    }
+  }
+
+
+
+    // todo: write your code here

@@ -1,0 +1,26 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import com.qualcomm.robotcore.util.Telemetry;
+import java.util.concurrent.TimeUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+@Autonomous
+
+public class FatimaCamera extends LinearOpMode{
+
+
+    AprilTagProcessor aprilTag;
+    VisionPortal visionPortal;
+    Gamepad gamepad; 
+    double kp = 0.5;
+    double ki = 0.5;
+    double kd = 0.5;
+    public ElapsedTime runtime = new ElapsedTime();

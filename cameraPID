@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import com.qualcomm.robotcore.util.Telemetry;
+import java.util.concurrent.TimeUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
 
@@ -19,7 +21,9 @@ public class FatimaCamera extends LinearOpMode{
     VisionPortal visionPortal;
     Gamepad gamepad; 
     double kp = 0.5;
-
+    double ki = 0.5;
+    double kd = 0.5;
+    public ElapsedTime runtime = new ElapsedTime();
      public void initAT (){
 
 
@@ -57,9 +61,13 @@ public void runOpMode(){
   }
 }
 public double PIDController(double target, double current){
-    double result = target - current;
+    double proportion_error = target - current;
     result *= kp;
     return result;
+    double integral sum += proportion_error * runtime;
+    runtime.reset();
+    double derivative = proportion_error/runtime;
+
   
     }
 }

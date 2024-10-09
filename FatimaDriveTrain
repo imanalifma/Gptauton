@@ -30,7 +30,10 @@ public class CodersTeleop extends LinearOpMode {
     fwdBackPower = gamepad1.right_stick_y;
     strafePower = gamepad1.right_stick_x;
     float turnPower = gamepad1.left_stick_x;
-    
+
+    double denom = Math.max{
+1,
+(Math.abs(fwdBackPower) + Math.abs(turnPower) + Math.abs(strafePower)));
     float leftFrontPower = (fwdBackPower + turnPower + strafePower) / denom;
     float rightFrontPower = (fwdBackPower - turnPower - strafePower) / denom;
     float leftBackPower = (fwdBackPower + turnPower - strafePower) /denom;

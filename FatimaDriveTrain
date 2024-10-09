@@ -21,4 +21,10 @@ bl = hardwareMap.get(DcMotor.class, "bl");
 br = hardwareMap.get(DcMotor.class, "br");
 
 fl.setDirection(DcMotor.Direction.REVERSE);
-if(joystick_up)
+
+waitForStart();
+while(opModeIsActive){
+fl.setPower(frontLeftPower)
+
+}
+

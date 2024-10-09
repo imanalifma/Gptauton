@@ -23,8 +23,10 @@ br = hardwareMap.get(DcMotor.class, "br");
 fl.setDirection(DcMotor.Direction.REVERSE);
 
 waitForStart();
+
 while(opModeIsActive){
-fl.setPower(frontLeftPower)
+
+fwdBackPower = gamepad
 
 }
 

@@ -28,7 +28,7 @@ while(opModeIsActive){
 
 fwdBackPower = gamepad1.right_stick_y;
 strafePower = gamepad1.right_stick_x;
-
+float turnPower = gamepad1.left_stick_x;
 
 }
 

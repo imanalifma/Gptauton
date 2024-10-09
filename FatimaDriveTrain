@@ -10,30 +10,36 @@ public class Fatima extends LinearOpMode{
 @TeleOp
 
 public class CodersTeleop extends LinearOpMode {
+    
     DcMotor fl;
     DcMotor fr;
     DcMotor bl;
     DcMotor br;
 
-fl = hardwareMap.get(DcMotor.class, "fl");
-fr = hardwareMap.get(DcMotor.class, "fr");
-bl = hardwareMap.get(DcMotor.class, "bl");
-br = hardwareMap.get(DcMotor.class, "br");
-
-fl.setDirection(DcMotor.Direction.REVERSE);
-
-waitForStart();
-
-while(opModeIsActive){
-
-fwdBackPower = gamepad1.right_stick_y;
-strafePower = gamepad1.right_stick_x;
-float turnPower = gamepad1.left_stick_x;
-
-float leftFrontPower = (fwdBackPower + turnPower + strafePower) / denom;
-float rightFrontPower = (fwdBackPower - turnPower - strafePower) / denom;
-float leftBackPower = (fwdBackPower + turnPower - strafePower) /denom;
-float rightBackPower = (fwdBackPower - turnPower + strafePower) /denom;
+    fl = hardwareMap.get(DcMotor.class, "fl");
+    fr = hardwareMap.get(DcMotor.class, "fr");
+    bl = hardwareMap.get(DcMotor.class, "bl");
+    br = hardwareMap.get(DcMotor.class, "br");
+    
+    fl.setDirection(DcMotor.Direction.REVERSE);
+    
+    waitForStart();
+    
+    while(opModeIsActive){
+    
+    fwdBackPower = gamepad1.right_stick_y;
+    strafePower = gamepad1.right_stick_x;
+    float turnPower = gamepad1.left_stick_x;
+    
+    float leftFrontPower = (fwdBackPower + turnPower + strafePower) / denom;
+    float rightFrontPower = (fwdBackPower - turnPower - strafePower) / denom;
+    float leftBackPower = (fwdBackPower + turnPower - strafePower) /denom;
+    float rightBackPower = (fwdBackPower - turnPower + strafePower) /denom;
+        
+    backLeft.setPower(leftBackPower);
+    backRight.setPower(rightBackPower);
+    frontLeft.setPower(leftFrontPower);
+    frontRight.setPower(rightFrontPower);
 
 
 }

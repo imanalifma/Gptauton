@@ -30,10 +30,11 @@ fwdBackPower = gamepad1.right_stick_y;
 strafePower = gamepad1.right_stick_x;
 float turnPower = gamepad1.left_stick_x;
 
-float leftFrontPower = fwdBackPower + turnPower + strafePower;
-float rightFrontPower = fwdBackPower - turnPower - strafePower;
-float leftBackPower = fwdBackPower + turnPower - strafePower;
-float rightBackPower = fwdBackPower - turnPower + strafePower;
+float leftFrontPower = (fwdBackPower + turnPower + strafePower) / denom;
+float rightFrontPower = (fwdBackPower - turnPower - strafePower) / denom;
+float leftBackPower = (fwdBackPower + turnPower - strafePower) /denom;
+float rightBackPower = (fwdBackPower - turnPower + strafePower) /denom;
+
 
 }
 

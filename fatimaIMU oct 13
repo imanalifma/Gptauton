@@ -8,18 +8,18 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import java.util.List;
+import org.firstinspires.ftc.robotcore.external.navigation.RevHubOrientationOnRobot;
+//import com.qualcomm.robotcore.util.YawPitchRollAngles;
+
 
 @Autonomous
 
 public class FatimaPID extends LinearOpMode{
-    double kp = 0.5;
-    double ki = 0.5;
-    double kd = 0.5;
-    public ElapsedTime runtime = new ElapsedTime();
-    double lastError = 0;
+    
     double integralSum = 0;
     private BNO055IMU imu;
     AprilTagProcessor aprilTag;
@@ -28,6 +28,7 @@ public class FatimaPID extends LinearOpMode{
     double kp = 0.5;
     double ki = 0.5;
     double kd = 0.5;
+    double lastError;
     public ElapsedTime runtime = new ElapsedTime();
     
      public void initAT (){
@@ -37,7 +38,6 @@ public class FatimaPID extends LinearOpMode{
         //visionPortal.initCamera(hardwareMap.get(WebcamName.class, "Webcam 1"), 640, 480);
         //visionPortal.startStreaming();
     aprilTag = AprilTagProcessor.easyCreateWithDefaults();
-
     visionPortal = visionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
     imu = hardwareMap.get(BNO055IMU.class, "imu");
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters(
@@ -61,19 +61,28 @@ public void runOpMode(){
   initAT();
   waitForStart();
     
-    YawPitchRollAngles robotOrientation;
-    robotOrientation = imu.getRobotYawPitchRollAngles();
-    
+    //YawPitchRollAngles robotOrientation;
+    //robotOrientation = imu.getRobotYawPitchRollAngles();
+    Orientation robotOrientation;
+    robotOrientation = imu.getRobotOrientation(
+        AxesReference.INTRINSIC,
+        Axesorder.XYZ, 
+        AngleUnit.DEGREES);  
   while(opModeIsActive()){
     
     
-    double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+    /*double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
     double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
-    double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);
+    double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);*/
+    
+     double Yaw = robotOrientation.firstAngle;
+    double Pitch = robotOrientation.secondAngle;
+    double Roll = robotOrientation.thirdAngle;
+    
       
-      temeletry.addData("imu yaw:", Yaw);
-      temeletry.addData("imu pitch:", Pitch);
-      temeletry.addData("imu roll:", Roll);
+      telemetry.addData("imu yaw:", Yaw);
+      telemetry.addData("imu pitch:", Pitch);
+      telemetry.addData("imu roll:", Roll);
       telemetry.update();
       PIDController(30,15);
    // telemetryAprilTag();   
@@ -135,26 +144,4 @@ private void telemetryAprilTag() {
     }   // end method telemetryAprilTag()
 
 }
-
-
-
-
-
-    
-    // todo: write your code here
-
-
-    
-
-
-
-
-    
-
-
-
-
-
-  
-  
 

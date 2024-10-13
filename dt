@@ -1,0 +1,27 @@
+public class Fatima extends LinearOpMode{
+
+DcMotor frontleft;
+DcMotor frontright;
+DcMotor backleft;
+DcMotor backright;
+DcMotor ItkanGuestPswrdisitkan123;
+
+frontleft = hardwareMap.get(DcMotor.class, "fl");
+frontright = hardwareMap.get(DcMotor.class, "fr");
+backleft = hardwareMap.get(DcMotor.class, "bl");
+backright = hardwareMap.get(DcMotor.class, "br");
+
+fwdbackPower = gampad.left_stick_y;
+strafePower = gamepad.left_stick_x;
+turnPower = gamepad.right_stick_x;
+
+
+frontLeftPower = (fwdbackPower + strafePower + turnPower);
+frontRightPower = (fwdbackPower + strafePower + turnPower);
+backLeftPower =  (fwdbackPower - strafePower - turnPower);
+backRightPower =  (fwdbackPower + strafePower + turnPower);
+
+frontLeft.setPower(frontLeftPower);
+frontRight.setPower(frontRightPower);
+backLeft.setPower(backLeftPower);
+backRight.setPower(backRightPower);

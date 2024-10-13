@@ -1,0 +1,160 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import java.util.concurrent.TimeUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+
+@Autonomous
+
+public class FatimaPID extends LinearOpMode{
+    double kp = 0.5;
+    double ki = 0.5;
+    double kd = 0.5;
+    public ElapsedTime runtime = new ElapsedTime();
+    double lastError = 0;
+    double integralSum = 0;
+    private BNO055IMU imu;
+    AprilTagProcessor aprilTag;
+    VisionPortal visionPortal;
+    Gamepad gamepad; 
+    double kp = 0.5;
+    double ki = 0.5;
+    double kd = 0.5;
+    public ElapsedTime runtime = new ElapsedTime();
+    
+     public void initAT (){
+
+
+    //visionPortal = new VisionPortal("Vision Portal", hardwareMap.get(WebcamName.class, "Webcam 1"));
+        //visionPortal.initCamera(hardwareMap.get(WebcamName.class, "Webcam 1"), 640, 480);
+        //visionPortal.startStreaming();
+    aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+    visionPortal = visionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+    imu = hardwareMap.get(BNO055IMU.class, "imu");
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters(
+   
+    new RevHubOrientationOnRobot( // these are parameters
+    RevHubOrientationOnRobot.LogoFacingDirection.UP,
+    RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
+    ));
+    
+    parameters.mode = BNO055IMU.SensorMode.IMU;
+    parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+    imu.initialize(parameters);
+        
+    
+
+
+}
+@Override
+public void runOpMode(){
+
+  initAT();
+  waitForStart();
+    
+    YawPitchRollAngles robotOrientation;
+    robotOrientation = imu.getRobotYawPitchRollAngles();
+    
+  while(opModeIsActive()){
+    
+    
+    double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+    double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+    double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);
+      
+      temeletry.addData("imu yaw:", Yaw);
+      temeletry.addData("imu pitch:", Pitch);
+      temeletry.addData("imu roll:", Roll);
+      telemetry.update();
+      PIDController(30,15);
+   // telemetryAprilTag();   
+    gamepad = gamepad1; // Initialize gamepad
+            boolean dpad_down_isPressed = gamepad.dpad_down;
+            boolean dpad_up_isPressed = gamepad.dpad_up;
+    if(dpad_down_isPressed){
+        visionPortal.stopStreaming();
+
+    }
+    else if(dpad_up_isPressed){
+        visionPortal.resumeStreaming();
+    }
+    else{
+  
+    }
+
+  }
+}
+public double PIDController(double target, double current){
+    double proportion_error = target - current;
+    double integralSum = integralSum + proportion_error * runtime.seconds();
+    double derivative = proportion_error/runtime.seconds();
+    double total = kp * proportion_error + ki * integralSum + kd * derivative;
+    lastError = proportion_error;
+    
+    runtime.reset();
+    return total;
+
+  
+    }
+
+
+
+
+private void telemetryAprilTag() {
+
+    List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+    telemetry.addData("# AprilTags Detected", currentDetections.size());
+
+    // Step through the list of detections and display info for each one.
+    for (AprilTagDetection detection : currentDetections) {
+        if (detection.metadata != null) {
+            telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+            telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+            telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+            telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+        } else {
+            telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+            telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+        }
+    }   // end for() loop
+
+    // Add "key" information to telemetry
+    telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+    telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+    telemetry.addLine("RBE = Range, Bearing & Elevation");
+    telemetry.update();
+    }   // end method telemetryAprilTag()
+
+}
+
+
+
+
+
+    
+    // todo: write your code here
+
+
+    
+
+
+
+
+    
+
+
+
+
+
+  
+  
+

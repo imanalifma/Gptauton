@@ -1,0 +1,57 @@
+package org.firstinspires.ftc.teamcode.bakar;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+@TeleOp
+
+public class FatimaArcadeDrive extends LinearOpMode{
+
+
+DcMotor frontLeft;
+DcMotor frontRight;
+DcMotor midLeft;
+DcMotor midRight;
+public void runOpMode(){
+
+frontLeft = hardwareMap.get(DcMotor.class,"frontleft");
+frontRight = hardwareMap.get(DcMotor.class,"frontright");
+midLeft = hardwareMap.get(DcMotor.class,"midleft");
+midRight = hardwareMap.get(DcMotor.class,"midright");
+
+midLeft.setDirection(DcMotor.Direction.REVERSE);
+frontLeft.setDirection(DcMotor.Direction.REVERSE);
+
+frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+waitForStart();
+while(opModeIsActive()){
+    float fwdBackPower = -gamepad1.left_stick_y;
+    float strafePower= gamepad1.left_stick_x;
+    float turnPower = gamepad1.right_stick_x;
+    
+       
+   float leftFrontPower = fwdBackPower -  turnPower;
+   float rightFrontPower = fwdBackPower + turnPower;
+    float leftMidPower = strafePower;
+    float rightMidPower =  strafePower;
+    
+    
+    
+    frontLeft.setPower(leftFrontPower);
+    frontRight.setPower(rightFrontPower);
+    midLeft.setPower(leftMidPower);
+    midRight.setPower(rightMidPower);
+    
+    
+    
+}
+}
+
+
+    // todo: write your code here
+}
+

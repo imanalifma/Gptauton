@@ -28,11 +28,11 @@ public class Hdijghuidhnerujeikehneduijedn extends LinearOpMode {
     private IMU imu;
     ElapsedTime timer = new ElapsedTime();
     // proportion
-    private double kp = 0.2;
+    private double kp = 0.05;
     // integral
-    private double ki = 0.2;
+    private double ki = 0.05;
     // derivative
-    private double kd = 0.2;
+    private double kd = 0.05;
     
     double inte = 0;
     double lasterror = 0;
@@ -148,6 +148,9 @@ public class Hdijghuidhnerujeikehneduijedn extends LinearOpMode {
         der = der * kd;
        
         timer.reset();
+        telemetry.addData("pro: ", pro);
+        telemetry.addData("inte: ", inte);
+        telemetry.addData("der: ", der);
         double sum = pro + inte + der;
         return sum;
     

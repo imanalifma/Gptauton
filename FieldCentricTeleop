@@ -7,12 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @TeleOp
 
-public class CodersTeleop extends LinearOpMode {
+public class FieldCentricTeleop extends LinearOpMode {
     DcMotor frontLeft;
     DcMotor frontRight;
     DcMotor backLeft;
-    DcMotor backRight;
-   
+    DcMotor backRight;  
+    IMU imu;
+
 public void runOpMode() {
     backLeft = hardwareMap.get (DcMotor.class,"bl");
     backRight = hardwareMap.get (DcMotor.class,"br");

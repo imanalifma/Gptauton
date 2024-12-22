@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+import com.qualcomm.robotcore
 
 @TeleOp
 
@@ -20,36 +20,39 @@ public void runOpMode() {
     frontLeft= hardwareMap.get (DcMotor.class,"fl");
     frontRight= hardwareMap.get (DcMotor.class,"fr");
     imu = hardwareMap.get(IMU.class, "imu");
-    
+
+    IMU.Paramaters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+imu.initialize(parameters);
    backLeft.setDirection (DcMotor.Direction.REVERSE);
     frontLeft.setDirection(DcMotor.Direction.REVERSE);
+
+  
     waitForStart();
-
+    
     while (opModeIsActive()) {
-        
-       
-       float fwdBackPower = -gamepad1.right_stick_y;
-       float strafePower= gamepad1.right_stick_x;
-       float turnPower = gamepad1.left_stick_x;
-       
-       
-       float leftFrontPower = fwdBackPower + turnPower + strafePower;
-       float rightFrontPower = fwdBackPower - turnPower - strafePower;
-       float leftBackPower = fwdBackPower + turnPower - strafePower;
-       float rightBackPower = fwdBackPower - turnPower + strafePower;
-       
-       /*
-float maxPower= Math.abs(leftFrontPower);
 
-if(Math.abs(rightFrontPower) > maxPower) {
-    maxPower =Math.abs(rightFrontPower);
-} 
-if(Math.abs(leftBackPower) > maxPower) {
-    maxPower = Math.abs(leftBackPower);
-}
-if(Math.abs(rightBackPower) > maxPower) {
-    maxPower = Math.abs(rightBackPower);
-}
+        float y = -gamepad1.left_stick_y; // Y stick value is reversed 
+        float x = gamepad1.left_stick_x;
+        float rx = gamepad1.right_stick_x;
+if(gamepad1.options){
+        imu.resetYaw();
+    }
+
+double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botheading);
+double rotY = x * Math.cos(-botHeading) + y * Math.sin(-botheading);
+
+rotX = rotX * 1.1; // counteract imperfect strafing
+
+double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+
+double FrontLeftPower = (rotY + rotX + rx) / denominator;
+double backLeftPower = (rotY - rotX + rx) / denominator
+double frontRightPower = (rotY - rotX - rx) / denominator;
+double backRightPower = (rotY + rotX - rx) / denominator;
+       
+    
 
    //// if(maxPower > 1.0){
         leftFrontPower = leftFrontPower/maxPower;
@@ -59,10 +62,10 @@ if(Math.abs(rightBackPower) > maxPower) {
    // }
 */   
    
-    backLeft.setPower(leftBackPower);
-    backRight.setPower(rightBackPower);
-    frontLeft.setPower(leftFrontPower);
-    frontRight.setPower(rightFrontPower);
+    backLeft.setPower(BackLeftPower);
+    backRight.setPower(BackRightPower);
+    frontLeft.setPower(FrontLeftPower);
+    frontRight.setPower(FrontRightPower);
    
 
     telemetry.addData("data" ,  leftFrontPower + 

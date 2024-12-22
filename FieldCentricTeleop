@@ -19,6 +19,7 @@ public void runOpMode() {
     backRight = hardwareMap.get (DcMotor.class,"br");
     frontLeft= hardwareMap.get (DcMotor.class,"fl");
     frontRight= hardwareMap.get (DcMotor.class,"fr");
+    imu = hardwareMap.get(IMU.class, "imu");
     
    backLeft.setDirection (DcMotor.Direction.REVERSE);
     frontLeft.setDirection(DcMotor.Direction.REVERSE);

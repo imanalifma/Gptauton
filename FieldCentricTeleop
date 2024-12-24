@@ -48,19 +48,13 @@ rotX = rotX * 1.1; // counteract imperfect strafing
 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
 
 double FrontLeftPower = (rotY + rotX + rx) / denominator;
-double backLeftPower = (rotY - rotX + rx) / denominator
+double backLeftPower = (rotY - rotX + rx) / denominator;
 double frontRightPower = (rotY - rotX - rx) / denominator;
 double backRightPower = (rotY + rotX - rx) / denominator;
        
     
 
-   //// if(maxPower > 1.0){
-        leftFrontPower = leftFrontPower/maxPower;
-        rightFrontPower = rightFrontPower/maxPower;
-        leftBackPower = leftBackPower/maxPower;
-        rightBackPower = rightBackPower/maxPower;
-   // }
-*/   
+  
    
     backLeft.setPower(BackLeftPower);
     backRight.setPower(BackRightPower);
@@ -68,10 +62,10 @@ double backRightPower = (rotY + rotX - rx) / denominator;
     frontRight.setPower(FrontRightPower);
    
 
-    telemetry.addData("data" ,  leftFrontPower + 
-    " " + rightFrontPower +
-    " " + leftBackPower +
-    " " + rightBackPower);
+    telemetry.addData("data" ,  FrontLeftPower + 
+    " " + FrontRightPower +
+    " " + BackLeftPower +
+    " " + BackRightPower);
 
 telemetry.update();
 }

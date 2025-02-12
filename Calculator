@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+public class MyClass {
+  public static void main(String args[]) {
+    double num1;
+    double num2;
+    
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Enter the numbers:");
+ 
+        // Take the inputs
+        num1 = scanner.nextDouble();
+        num2 = scanner.nextDouble();
+        
+    System.out.println("Enter operator");
+    
+    char op = scanner.next().charAt(0);
+    double result = 0;
+    
+    switch (op){
+        case '+':
+            result = num1 + num2;
+            break;
+            
+        case '-':
+            result = num1 - num2;
+            break;
+            
+        case '*':
+            result = num1 * num2;
+            break;
+            
+        case '/':
+            result = num1/num2;
+            break;
+    
+    
+    default: 
+    System.out.println("Wrong Input");
+  }
+  
+  System.out.println("Final result: ");   
+    System.out.println(num1 + "" + op + "" + num2 + "=" + result);
+  }
+}
